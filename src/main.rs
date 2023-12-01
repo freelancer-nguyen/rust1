@@ -1,40 +1,30 @@
-use rand::Rng;
-use std::cmp::Ordering;
 use std::io;
 
 fn main() {
-    println!("Guess the number!");
-
-    let secret_number = rand::thread_rng().gen_range(1..=100);
-
-    //println!("The secret number is: {secret_number}");
-
     loop {
-        println!("Please input your guess.");
+        println!("Please enter sequence number");
+        let mut n = String::new();
 
-        let mut guess = String::new();
+        io::stdin().read_line(&mut n).expect("Failed to read line");
 
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-
-        let guess: u32 = match guess.trim().parse() {
+        let n: u16 = match n.trim().parse() {
             Ok(num) => num,
             Err(_) => {
-                print!("Not a valid number! ");
+                println!("Not a valid number");
                 continue;
             }
         };
+        let result = fib(n);
+        println!("{n}th Fibonacci number is {result}");
+    }
+}
 
-        println!("You guessed: {guess}");
-
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => {
-                println!("You win!");
-                break;
-            }
-        }
+fn fib(n: u16) -> u128 {
+    if n == 1 {
+        0
+    } else if n == 2 {
+        1
+    } else {
+        fib(n - 1) + fib(n - 2)
     }
 }
